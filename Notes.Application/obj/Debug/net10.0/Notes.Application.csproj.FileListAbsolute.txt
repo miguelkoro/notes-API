@@ -28,3 +28,4 @@ G:\GitRepos\.NET\notes-api\Notes.Application\obj\Debug\net10.0\Notes.Application
 G:\GitRepos\.NET\notes-api\Notes.Application\obj\Debug\net10.0\refint\Notes.Application.dll
 G:\GitRepos\.NET\notes-api\Notes.Application\obj\Debug\net10.0\Notes.Application.pdb
 G:\GitRepos\.NET\notes-api\Notes.Application\obj\Debug\net10.0\ref\Notes.Application.dll
+G:\GitRepos\.NET\notes-api\Notes.Application\obj\Debug\net10.0\Notes.Application.sourcelink.json

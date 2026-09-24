@@ -20,3 +20,4 @@ G:\GitRepos\.NET\notes-api\Notes.Domain\obj\Debug\net10.0\Notes.Domain.dll
 G:\GitRepos\.NET\notes-api\Notes.Domain\obj\Debug\net10.0\refint\Notes.Domain.dll
 G:\GitRepos\.NET\notes-api\Notes.Domain\obj\Debug\net10.0\Notes.Domain.pdb
 G:\GitRepos\.NET\notes-api\Notes.Domain\obj\Debug\net10.0\ref\Notes.Domain.dll
+G:\GitRepos\.NET\notes-api\Notes.Domain\obj\Debug\net10.0\Notes.Domain.sourcelink.json

@@ -9,7 +9,7 @@ public class Note
 
     public string Title { get; private set; } = string.Empty; //= null!;
 
-    public string Content { get; private set; } = string.Empty; //= null!;
+    public string Content { get; private set; } = null!;//= string.Empty; //= null!;
 
     public DateTime CreatedAt { get; private set; }
 

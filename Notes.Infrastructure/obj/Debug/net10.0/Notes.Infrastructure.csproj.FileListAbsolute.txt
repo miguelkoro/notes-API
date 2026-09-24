@@ -36,3 +36,4 @@ G:\GitRepos\.NET\notes-api\Notes.Infrastructure\obj\Debug\net10.0\refint\Notes.I
 G:\GitRepos\.NET\notes-api\Notes.Infrastructure\obj\Debug\net10.0\Notes.Infrastructure.pdb
 G:\GitRepos\.NET\notes-api\Notes.Infrastructure\obj\Debug\net10.0\Notes.Infrastructure.genruntimeconfig.cache
 G:\GitRepos\.NET\notes-api\Notes.Infrastructure\obj\Debug\net10.0\ref\Notes.Infrastructure.dll
+G:\GitRepos\.NET\notes-api\Notes.Infrastructure\obj\Debug\net10.0\Notes.Infrastructure.sourcelink.json
