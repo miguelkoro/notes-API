@@ -9,7 +9,7 @@ public class Note
 
     public string Title { get; private set; } = string.Empty; //= null!;
 
-    public string Content { get; private set; } = null!;//= string.Empty; //= null!;
+    public string? Content { get; private set; } = null!;//= string.Empty; //= null!;
 
     public DateTime CreatedAt { get; private set; }
 
@@ -20,7 +20,7 @@ public class Note
 
     //Este constructor es el que se utilizará para crear una nueva nota, 
     // asegurando que se cumplan las validaciones establecidas para el título y el contenido. 
-    public Note(string title, string content)
+    public Note(string title, string? content)
     {
 
         //Añado validaciones para asegurar que el título y el contenido cumplan con los requisitos establecidos.
@@ -42,5 +42,27 @@ public class Note
         Title = title;
         Content = content;
         CreatedAt = DateTime.UtcNow; // Asigno la fecha y hora actual en formato UTC al crear una nueva nota.
+    }
+
+    public void Update(string? title, string? content)
+    {
+        //Añado validaciones para asegurar que el título y el contenido cumplan con los requisitos establecidos.
+        if (string.IsNullOrWhiteSpace(title))
+        {
+            throw new ArgumentException("El titulo es obligatorio.", nameof(title));
+        }
+
+        if (title.Length > 150)
+        {
+            throw new ArgumentException("El titulo no puede exceder los 150 caracteres.", nameof(title));
+        }
+
+        if (content != null && content.Length > 1500)
+        {
+            throw new ArgumentException("El contenido no puede exceder los 1500 caracteres.", nameof(content));
+        }
+
+        Title = title;
+        Content = content;
     }
 }

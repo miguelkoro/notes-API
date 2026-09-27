@@ -12,10 +12,12 @@ public class CreateNote
         _noteRepository = noteRepository;
     }
 
-    public async Task ExecuteAsync(string title, string content)
+    public async Task<Note> ExecuteAsync(string title, string content)
     {
         var note = new Note(title, content);
 
         await _noteRepository.AddAsync(note);
+
+        return note; //Hacemos que devuelva la nota creada para poder usarla en el controlador y devolverla en la respuesta HTTP.
     }
 }
