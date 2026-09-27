@@ -29,6 +29,7 @@ builder.Services.AddScoped<CreateNote>();
 builder.Services.AddScoped<GetNotes>(); //Agrega la clase GetNotes al contenedor de servicios de la aplicacion. (Scopped = crea instancia por peticion http)
 builder.Services.AddScoped<GetNote>(); //Agrega la clase GetNote al contenedor de servicios de la aplicacion. (Scopped = crea instancia por peticion http)
 builder.Services.AddScoped<UpdateNote>(); //Agrega la clase UpdateNote al contenedor de servicios de la aplicacion. (Scopped = crea instancia por peticion http)
+builder.Services.AddScoped<DeleteNote>(); //Agrega la clase DeleteNote al contenedor de servicios de la aplicacion. (Scopped = crea instancia por peticion http)
 
 
 var app = builder.Build();

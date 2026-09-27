@@ -13,4 +13,6 @@ public interface INoteRepository
     Task<Note?> GetByIdAsync(int id); // Representa una operacion que se ejecuta de forma asincrona y devuelve una nota. En este caso, se utiliza para obtener una nota almacenada en la base de datos de manera asincrona.
 
     Task<Note?> UpdateAsync(Note note); // Representa una operacion que se ejecuta de forma asincrona y no devuelve ningun valor, pero indica que la operacion se ha completado. En este caso, se utiliza para actualizar una nota existente en la base de datos de manera asincrona.
+
+    Task DeleteAsync(int id); // Representa una operacion que se ejecuta de forma asincrona y no devuelve ningun valor, pero indica que la operacion se ha completado. En este caso, se utiliza para eliminar una nota existente en la base de datos de manera asincrona.
 }

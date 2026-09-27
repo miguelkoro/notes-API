@@ -12,14 +12,14 @@ public class NotesController : ControllerBase
     private readonly GetNotes _getNotes;
     private readonly GetNote _getNote;
     private readonly UpdateNote _updateNote;
-
-    public NotesController(CreateNote createNote, GetNotes getNotes, GetNote getNote, UpdateNote updateNote)
+    private readonly DeleteNote _deleteNote;
+    public NotesController(CreateNote createNote, GetNotes getNotes, GetNote getNote, UpdateNote updateNote, DeleteNote deleteNote)
     {
         _createNote = createNote;
         _getNotes = getNotes;
         _getNote = getNote;
         _updateNote = updateNote;
-
+        _deleteNote = deleteNote;
     }
 
     //Define un método de acción que maneja las solicitudes HTTP POST a la ruta "api/notes". Este método recibe un objeto CreateNoteRequest como parámetro, que contiene los datos necesarios para crear una nueva nota.
@@ -53,7 +53,11 @@ public class NotesController : ControllerBase
             return NotFound(); //Devuelve una respuesta HTTP 404 Not Found si la nota no existe.
         }
 
-        return Ok(note);
+        //return Ok(note);
+        return CreatedAtAction(//Devuelve una respuesta HTTP 201 Created con la nota creada en el cuerpo de la respuesta y la ubicación de la nueva nota en el encabezado Location.
+            nameof(GetById), 
+            new { id = note.Id }, 
+            note); 
     }
 
     //Define un método de acción que maneja las solicitudes HTTP PUT a la ruta "api/notes/{id}". Este método actualiza una nota específica por su ID y la devuelve en una respuesta HTTP 200 OK.
@@ -68,5 +72,21 @@ public class NotesController : ControllerBase
         }
 
         return Ok(note);
+    }
+
+    //Define un método de acción que maneja las solicitudes HTTP DELETE a la ruta "api/notes/{id}". Este método elimina una nota específica por su ID y devuelve una respuesta HTTP 204 No Content si la eliminación fue exitosa.
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var deleted = await _deleteNote.ExecuteAsync(id);
+
+        if (!deleted)
+        {
+            return NotFound(); //Devuelve una respuesta HTTP 404 Not Found si la nota no existe.
+        }
+
+        await _deleteNote.ExecuteAsync(id);
+
+        return NoContent(); //Devuelve una respuesta HTTP 204 No Content si la eliminación fue exitosa.
     }
 }

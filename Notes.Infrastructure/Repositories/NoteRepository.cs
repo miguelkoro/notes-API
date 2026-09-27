@@ -38,5 +38,15 @@ public class NoteRepository : INoteRepository
         await _dbContext.SaveChangesAsync();
         return note;
     }
+
+    public async Task DeleteAsync(int id)
+    {
+        var note = await _dbContext.Notes.FindAsync(id);
+        if (note != null)
+        {
+            _dbContext.Notes.Remove(note);
+            await _dbContext.SaveChangesAsync();
+        }
+    }
  
 }
