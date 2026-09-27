@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Notes.Application.Notes;
 using Notes.API.DTOs;
+using Notes.API.Errors;
 
 namespace Notes.API.Controllers;
 
@@ -30,7 +31,11 @@ public class NotesController : ControllerBase
             request.Title,
             request.Content);
 
-        return Ok(note); //Devuelve una respuesta HTTP 200 OK con la nota creada en el cuerpo de la respuesta.
+        //return Ok(note); //Devuelve una respuesta HTTP 200 OK con la nota creada en el cuerpo de la respuesta.
+        return CreatedAtAction(//Devuelve una respuesta HTTP 201 Created con la nota creada en el cuerpo de la respuesta y la ubicación de la nueva nota en el encabezado Location.
+            nameof(GetById), 
+            new { id = note.Id }, 
+            note);
     }
 
     //Define un método de acción que maneja las solicitudes HTTP GET a la ruta "api/notes". Este método obtiene todas las notas almacenadas en la base de datos y las devuelve en una respuesta HTTP 200 OK.
@@ -50,14 +55,14 @@ public class NotesController : ControllerBase
 
         if (note == null)
         {
-            return NotFound(); //Devuelve una respuesta HTTP 404 Not Found si la nota no existe.
-        }
+            //return NotFound(); //Devuelve una respuesta HTTP 404 Not Found si la nota no existe.
+            return NotFound(new ErrorResponse { //Devuelve una respuesta HTTP 404 Not Found si la nota no existe, con un mensaje personalizado.
+                Errors = [ErrorCodes.NoteNotFound]
+            });
+        } 
 
-        //return Ok(note);
-        return CreatedAtAction(//Devuelve una respuesta HTTP 201 Created con la nota creada en el cuerpo de la respuesta y la ubicación de la nueva nota en el encabezado Location.
-            nameof(GetById), 
-            new { id = note.Id }, 
-            note); 
+        return Ok(note);
+
     }
 
     //Define un método de acción que maneja las solicitudes HTTP PUT a la ruta "api/notes/{id}". Este método actualiza una nota específica por su ID y la devuelve en una respuesta HTTP 200 OK.
@@ -68,7 +73,9 @@ public class NotesController : ControllerBase
 
         if (note == null)
         {
-            return NotFound(); //Devuelve una respuesta HTTP 404 Not Found si la nota no existe.
+            return NotFound(new ErrorResponse { //Devuelve una respuesta HTTP 404 Not Found si la nota no existe, con un mensaje personalizado.
+                Errors = [ErrorCodes.NoteNotFound]
+            });
         }
 
         return Ok(note);
@@ -82,7 +89,9 @@ public class NotesController : ControllerBase
 
         if (!deleted)
         {
-            return NotFound(); //Devuelve una respuesta HTTP 404 Not Found si la nota no existe.
+            return NotFound(new ErrorResponse { //Devuelve una respuesta HTTP 404 Not Found si la nota no existe, con un mensaje personalizado.
+                Errors = [ErrorCodes.NoteNotFound]
+            });
         }
 
         await _deleteNote.ExecuteAsync(id);

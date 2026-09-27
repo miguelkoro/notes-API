@@ -1,10 +1,13 @@
 using Notes.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 using Notes.Infrastructure.Repositories;
 using Notes.Application.Interfaces;
 
 using Notes.Application.Notes;
+using Notes.API.Errors;
+using Notes.API.DTOs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +27,7 @@ builder.Services.AddDbContext<NotesDbContext>(options =>
 //Agrega la implementacion de INoteRepository, NoteRepository, al contenedor de servicios de la aplicacion. (Scopped = crea instancia por peticion http)
 builder.Services.AddScoped<INoteRepository, NoteRepository>();
 
+//NOTAS
 //Agrega la clase CreateNote al contenedor de servicios de la aplicacion. (Scopped = crea instancia por peticion http)
 builder.Services.AddScoped<CreateNote>();
 builder.Services.AddScoped<GetNotes>(); //Agrega la clase GetNotes al contenedor de servicios de la aplicacion. (Scopped = crea instancia por peticion http)
@@ -31,6 +35,27 @@ builder.Services.AddScoped<GetNote>(); //Agrega la clase GetNote al contenedor d
 builder.Services.AddScoped<UpdateNote>(); //Agrega la clase UpdateNote al contenedor de servicios de la aplicacion. (Scopped = crea instancia por peticion http)
 builder.Services.AddScoped<DeleteNote>(); //Agrega la clase DeleteNote al contenedor de servicios de la aplicacion. (Scopped = crea instancia por peticion http)
 
+//USER
+builder.Services.AddScoped<IUserRepository, UserRepository>(); //Agrega la implementacion de IUserRepository, UserRepository, al contenedor de servicios de la aplicacion. (Scopped = crea instancia por peticion http)
+
+//Agrega el servicio de manejo de excepciones globales al contenedor de servicios de la aplicacion. Esto permite que la aplicacion capture y maneje las excepciones no controladas que ocurren durante el procesamiento de las solicitudes HTTP, y devuelva respuestas HTTP adecuadas con informacion sobre el error.
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        var errors = context.ModelState
+            .SelectMany(x => x.Value!.Errors)
+            .Select(x => x.ErrorMessage)
+            .Where(x => !string.IsNullOrWhiteSpace(x))
+            .Distinct()
+            .ToList();
+
+        return new BadRequestObjectResult(new ErrorResponse
+        {
+            Errors = errors
+        });
+    };
+});
 
 var app = builder.Build();
 
@@ -45,29 +70,6 @@ app.UseHttpsRedirection();
 //Agrega el middleware de autorizacion al pipeline de procesamiento de solicitudes HTTP. Esto permite que la aplicacion verifique si el usuario que realiza la solicitud tiene los permisos necesarios para acceder a los recursos protegidos.
 app.MapControllers();
 
-/*var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
-*/
 app.Run();
 
-/*record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
-*/
