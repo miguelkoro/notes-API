@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Notes.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6e652452bffcf3f08a5f9471efdd67dab185ffa1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+86c92d5c8488dfbb2aff9b18c4f89e7c9d3e5c59")]
 [assembly: System.Reflection.AssemblyProductAttribute("Notes.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Notes.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

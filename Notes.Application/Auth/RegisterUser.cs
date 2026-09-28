@@ -61,6 +61,7 @@ public class RegisterUser
         // Devolvemos un objeto RegisterUserResult con la información del usuario registrado, sin incluir la contraseña.
         var result = new RegisterUserResult
         {
+            Success = true,
             Id = user.Id,
             Email = user.Email,
             Role = user.Role,
