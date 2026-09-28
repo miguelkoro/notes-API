@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "sDm2/q2kPoE=",
+  "dgSpecHash": "hoVVWbDa21M=",
   "success": true,
   "projectFilePath": "G:\\GitRepos\\.NET\\notes-api\\Notes.Infrastructure\\Notes.Infrastructure.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Miguelkoro\\.nuget\\packages\\bcrypt.net-next\\4.2.0\\bcrypt.net-next.4.2.0.nupkg.sha512",
     "C:\\Users\\Miguelkoro\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Miguelkoro\\.nuget\\packages\\microsoft.build.framework\\18.0.2\\microsoft.build.framework.18.0.2.nupkg.sha512",
     "C:\\Users\\Miguelkoro\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\3.11.0\\microsoft.codeanalysis.analyzers.3.11.0.nupkg.sha512",
