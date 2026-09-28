@@ -2,16 +2,22 @@
 
 //post http://localhost:5135/api/notes
 //Content-Type: application/json
+
 //{
 //    "title": " ",
 //    "content": "This is a test note."
 //}
 
 
-put http://localhost:5135/api/notes/1
+//put http://localhost:5135/api/notes/1
+//Content-Type: application/json
+
+//{   "title": "",    "content": "This note has been updated."}
+
+post http://localhost:5135/api/auth/register
 Content-Type: application/json
 
 {
-    "title": "",
-    "content": "This note has been updated."
+    "email": "us456er@example.com",
+    "password": "r2dfddfd3"
 }

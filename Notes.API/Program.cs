@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 using Notes.Infrastructure.Repositories;
 using Notes.Application.Interfaces;
-
-using Notes.Application.Notes;
 using Notes.Application.Auth;
+using Notes.Application.Notes;
+using Notes.Application.Errors;
 using Notes.Infrastructure.Security;
 using Notes.API.Errors;
 using Notes.API.DTOs;
@@ -63,6 +63,48 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 });
 
 var app = builder.Build();
+
+// Define un endpoint para el registro de usuarios en la ruta "/api/auth/register". Este endpoint maneja las solicitudes HTTP POST y recibe un objeto RegisterRequest como parámetro, que contiene los datos necesarios para registrar un nuevo usuario. El endpoint utiliza la clase RegisterUser para procesar la solicitud y devolver una respuesta HTTP 201 Created con la información del usuario registrado en el cuerpo de la respuesta.
+app.MapPost("/api/auth/register", async (
+    RegisterRequest request,
+    RegisterUser registerUser) =>
+{
+    var result = await registerUser.ExecuteAsync(request);
+
+    if (!result.Success)
+    {
+        return result.ErrorCode switch
+        {
+            ApplicationErrorCodes.InvalidEmail =>
+                Results.BadRequest(new ErrorResponse
+                {
+                    Errors = [result.ErrorCode]
+                }),
+
+            ApplicationErrorCodes.InvalidPassword =>
+                Results.BadRequest(new ErrorResponse
+                {
+                    Errors = [result.ErrorCode]
+                }),
+
+            ApplicationErrorCodes.EmailAlreadyExists =>
+                Results.Conflict(new ErrorResponse
+                {
+                    Errors = [result.ErrorCode]
+                }),
+
+            _ =>
+                Results.BadRequest(new ErrorResponse
+                {
+                    Errors = [result.ErrorCode ?? "UNKNOWN_ERROR"]
+                })
+        };
+    }
+
+    return Results.Created(
+        $"/api/users/{result.Id}",
+        result);
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -20,19 +20,35 @@ public class RegisterUser
     public async Task<RegisterUserResult> ExecuteAsync(RegisterRequest request)
     {
         if (string.IsNullOrWhiteSpace(request.Email))
-            throw new ApplicationException(ApplicationErrorCodes.InvalidEmail);
+            return new RegisterUserResult
+            {
+                Success = false,
+                ErrorCode = ApplicationErrorCodes.InvalidEmail
+            };
 
         if (string.IsNullOrWhiteSpace(request.Password))
-            throw new ApplicationException(ApplicationErrorCodes.InvalidPassword);
+            return new RegisterUserResult
+            {
+                Success = false,
+                ErrorCode = ApplicationErrorCodes.InvalidPassword
+            };
 
         if (request.Password.Length < 8 || request.Password.Length > 100)
-            throw new ApplicationException(ApplicationErrorCodes.InvalidPassword);
+            return new RegisterUserResult
+            {
+                Success = false,
+                ErrorCode = ApplicationErrorCodes.InvalidPassword
+            };
 
         var existingUser = await _userRepository
             .GetByEmailAsync(request.Email);
 
         if (existingUser != null)
-            throw new ApplicationException(ApplicationErrorCodes.EmailAlreadyExists);
+            return new RegisterUserResult
+            {
+                Success = false,
+                ErrorCode = ApplicationErrorCodes.EmailAlreadyExists
+            };
 
         var passwordHash = _passwordHasher.Hash(request.Password);
 
