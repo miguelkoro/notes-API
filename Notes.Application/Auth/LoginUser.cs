@@ -8,10 +8,13 @@ public class LoginUser
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher _passwordHasher;
 
-    public LoginUser(IUserRepository userRepository, IPasswordHasher passwordHasher)
+    private readonly ITokenService _tokenService;
+
+    public LoginUser(IUserRepository userRepository, IPasswordHasher passwordHasher, ITokenService tokenService)
     {
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
+        _tokenService = tokenService;
     }
 
     public async Task<LoginResult> ExecuteAsync(LoginRequest request)
@@ -59,9 +62,15 @@ public class LoginUser
             };
         }
 
+        var token = _tokenService.GenerateToken(
+            user.Id,
+            user.Email,
+            user.Role);
+
         return new LoginResult
         {
             Success = true,
+            Token = token,
             Id = user.Id,
             Email = user.Email,
             Role = user.Role

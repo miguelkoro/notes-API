@@ -2,11 +2,13 @@ using Microsoft.AspNetCore.Mvc;
 using Notes.Application.Notes;
 using Notes.API.DTOs;
 using Notes.API.Errors;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Notes.API.Controllers;
 
 [ApiController] //Indica que esta clase es un controlador de API y que se encargará de manejar las solicitudes HTTP entrantes y devolver respuestas HTTP.
 [Route("api/[controller]")] //Define la ruta base para las solicitudes HTTP que se dirigirán a este controlador. El [controller] se reemplazará automáticamente con el nombre del controlador, en este caso, "Notes".
+[Authorize] //Indica que todas las acciones de este controlador requieren que el usuario esté autenticado. Si un usuario no autenticado intenta acceder a una acción, se le denegará el acceso y se devolverá una respuesta HTTP 401 Unauthorized.
 public class NotesController : ControllerBase
 {
     private readonly CreateNote _createNote;

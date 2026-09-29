@@ -8,8 +8,12 @@ using Notes.Application.Auth;
 using Notes.Application.Notes;
 using Notes.Application.Errors;
 using Notes.Infrastructure.Security;
-using Notes.API.Errors;
 using Notes.API.DTOs;
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +48,8 @@ builder.Services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
 builder.Services.AddScoped<RegisterUser>();
 builder.Services.AddScoped<LoginUser>();
 
+builder.Services.AddScoped<ITokenService, JwtTokenService>(); //Agrega la implementacion de ITokenService, JwtTokenService, al contenedor de servicios de la aplicacion. (Scopped = crea instancia por peticion http)
+
 //Agrega el servicio de manejo de excepciones globales al contenedor de servicios de la aplicacion. Esto permite que la aplicacion capture y maneje las excepciones no controladas que ocurren durante el procesamiento de las solicitudes HTTP, y devuelva respuestas HTTP adecuadas con informacion sobre el error.
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
@@ -62,6 +68,35 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
         });
     };
 });
+
+//Agrega la configuracion de JWT al contenedor de servicios de la aplicacion. Esto permite que la aplicacion lea la configuracion de JWT desde el archivo de configuracion (appsettings.json) y la utilice para generar y validar tokens JWT en las solicitudes HTTP.
+builder.Services.Configure<JwtSettings>(
+    builder.Configuration.GetSection("Jwt"));
+
+//Agrega el servicio de autenticacion y configuracion de JWT al contenedor de servicios de la aplicacion. Esto permite que la aplicacion autentique a los usuarios mediante tokens JWT, y valide los tokens en las solicitudes HTTP entrantes.
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        var jwtSettings = builder.Configuration
+            .GetSection("Jwt")
+            .Get<JwtSettings>()!;
+
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = jwtSettings.Issuer,
+
+            ValidateAudience = true,
+            ValidAudience = jwtSettings.Audience,
+
+            ValidateLifetime = true,
+
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(jwtSettings.Key))
+        };
+    });
 
 var app = builder.Build();
 
@@ -121,13 +156,36 @@ app.MapPost("/api/auth/login", async (
     return Results.Ok(result);
 });
 
+// Define un endpoint para obtener la información del usuario autenticado en la ruta "/api/auth/me". Este endpoint maneja las solicitudes HTTP GET y utiliza el contexto de la solicitud (HttpContext) para acceder a la información del usuario autenticado. Devuelve una respuesta HTTP 200 OK con un objeto que contiene el estado de autenticación, el ID del usuario, el correo electrónico y el rol del usuario.
+app.MapGet("/api/auth/me", (HttpContext context) =>
+{
+    return Results.Ok(new
+    {
+        authenticated = context.User.Identity?.IsAuthenticated,
+
+        userId = context.User.FindFirst(
+            System.Security.Claims.ClaimTypes.NameIdentifier)?.Value,
+
+        email = context.User.FindFirst(
+            System.Security.Claims.ClaimTypes.Email)?.Value,
+
+        role = context.User.FindFirst(
+            System.Security.Claims.ClaimTypes.Role)?.Value
+    });
+})
+.RequireAuthorization();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
+app.UseHttpsRedirection(); //Agrega el middleware de redireccionamiento HTTPS al pipeline de procesamiento de solicitudes HTTP. Esto permite que la aplicacion redirija automaticamente las solicitudes HTTP entrantes a HTTPS, mejorando la seguridad de la comunicacion entre el cliente y el servidor.
+
+//Agrega el middleware de manejo de excepciones globales al pipeline de procesamiento de solicitudes HTTP. Esto permite que la aplicacion capture y maneje las excepciones no controladas que ocurren durante el procesamiento de las solicitudes HTTP, y devuelva respuestas HTTP adecuadas con informacion sobre el error.
+app.UseAuthentication();
+app.UseAuthorization();
 
 //Agrega el middleware de autorizacion al pipeline de procesamiento de solicitudes HTTP. Esto permite que la aplicacion verifique si el usuario que realiza la solicitud tiene los permisos necesarios para acceder a los recursos protegidos.
 app.MapControllers();

@@ -223,3 +223,12 @@ G:\GitRepos\.NET\notes-api\Notes.API\bin\Debug\net10.0\tr\Microsoft.CodeAnalysis
 G:\GitRepos\.NET\notes-api\Notes.API\bin\Debug\net10.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
 G:\GitRepos\.NET\notes-api\Notes.API\bin\Debug\net10.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
 G:\GitRepos\.NET\notes-api\Notes.API\bin\Debug\net10.0\BCrypt-Net-Next.dll
+G:\GitRepos\.NET\notes-api\Notes.API\bin\Debug\net10.0\Microsoft.Bcl.Cryptography.dll
+G:\GitRepos\.NET\notes-api\Notes.API\bin\Debug\net10.0\Microsoft.IdentityModel.Abstractions.dll
+G:\GitRepos\.NET\notes-api\Notes.API\bin\Debug\net10.0\Microsoft.IdentityModel.JsonWebTokens.dll
+G:\GitRepos\.NET\notes-api\Notes.API\bin\Debug\net10.0\Microsoft.IdentityModel.Logging.dll
+G:\GitRepos\.NET\notes-api\Notes.API\bin\Debug\net10.0\Microsoft.IdentityModel.Tokens.dll
+G:\GitRepos\.NET\notes-api\Notes.API\bin\Debug\net10.0\System.IdentityModel.Tokens.Jwt.dll
+G:\GitRepos\.NET\notes-api\Notes.API\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+G:\GitRepos\.NET\notes-api\Notes.API\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.dll
+G:\GitRepos\.NET\notes-api\Notes.API\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll

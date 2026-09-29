@@ -1,31 +1,49 @@
-//get http://localhost:5135/api/notes/3
-
-//post http://localhost:5135/api/notes
-//Content-Type: application/json
-
-//{
-//    "title": " ",
-//    "content": "This is a test note."
-//}
-
-
-//put http://localhost:5135/api/notes/1
-//Content-Type: application/json
-
-//{   "title": "",    "content": "This note has been updated."}
-
-//post http://localhost:5135/api/auth/register
-//Content-Type: application/json
-
-//{
-//    "email": "us456er3@example.com",
-//    "password": "r2dfddfd3"
-//}
-
-post http://localhost:5135/api/auth/login
+### Registrar usuario
+POST http://localhost:5135/api/auth/register
 Content-Type: application/json
 
 {
-    "email": "us456er3@example.com",
-    "password": "r2dfddfd3"
+  "email": "user@example.com",
+  "password": "password123"
+}
+
+### Iniciar sesión
+POST http://localhost:5135/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+### Obtener información del usuario autenticado
+GET http://localhost:5135/api/auth/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJ1c2VyQGV4YW1wbGUuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTc5MDcyMzAwMSwiaXNzIjoiTm90ZXNBcGkiLCJhdWQiOiJOb3Rlc0FwaUNsaWVudCJ9.qyS-LHt6XD6nFaNDgOd55uByWrokCIkNkqaTTDbR8R8
+
+### Eliminar nota
+DELETE http://localhost:5135/api/notes/1
+
+
+### Actualizar nota
+PUT http://localhost:5135/api/notes/1
+Content-Type: application/json
+
+{
+  "title": "Mi nota actualizada",
+  "content": "Contenido actualizado"
+}
+
+
+### Obtener todas las notas
+GET http://localhost:5135/api/notes
+
+### Obtener una nota
+GET http://localhost:5135/api/notes/1
+
+### Crear una nota
+POST http://localhost:5135/api/notes
+Content-Type: application/json
+
+{
+  "title": "Mi nota",
+  "content": "Contenido de prueba"
 }
